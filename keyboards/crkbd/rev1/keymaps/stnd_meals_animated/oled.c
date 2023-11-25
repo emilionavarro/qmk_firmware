@@ -12,7 +12,7 @@ extern const unsigned char font[] PROGMEM;
 static uint32_t oled_sleep_timer = 0;
 
 // 40 fps
-#define FRAME_TIMEOUT (1000 / 40)
+// #define FRAME_TIMEOUT (1000 / 90)
 // 30 sec
 #define SLEEP_TIMEOUT 90000
 
@@ -142,9 +142,9 @@ void render_status_right(void) {
     oled_write_P(corne_logo, false);
 
     // indent the layer state
-    oled_write_P(PSTR("       "), false);
-    render_layer_state();
-    oled_write_char('\n', false);
+    // oled_write_P(PSTR("       "), false);
+    // render_layer_state();
+    // oled_write_char('\n', false);
 }
 
 void render_frame(void) {
@@ -184,25 +184,25 @@ void render_frame(void) {
 }
 
 bool oled_task_user(void) {
-    // sleep if it has been long enough since we last got a char
-    if (timer_elapsed32(oled_sleep_timer) > SLEEP_TIMEOUT) {
-        oled_off();
-        return false;
-    } else {
-        oled_on();
-    }
+    // // sleep timeout
+    // if (timer_elapsed32(oled_sleep_timer) > SLEEP_TIMEOUT) {
+    //     oled_off();
+    //     return false;
+    // } else {
+    //     oled_on();
+    // }
 
     if (is_keyboard_left()) {
         render_status_left();
     } else {
-        render_status_right();
+        // render_status_right();
     }
 
     // time for the next frame?
-    if (timer_elapsed(anim_timer) > FRAME_TIMEOUT) {
+    // if (timer_elapsed(anim_timer) > FRAME_TIMEOUT) {
         anim_timer = timer_read();
         render_frame();
-    }
+    // }
 
     return false;
 }
